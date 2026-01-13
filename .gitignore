@@ -19,7 +19,17 @@ pnpm-debug.log*
 
 # content repository (independent mode)
 /content/
+src/content/posts/**
+src/content/spec/**
+public/images/**
+src/data/**
 *.backup
+
+# keep placeholders
+!src/content/posts/.gitkeep
+!src/content/spec/.gitkeep
+!public/images/.gitkeep
+!src/data/.gitkeep
 
 # Large zip files
 *.zip
