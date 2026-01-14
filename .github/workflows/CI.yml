@@ -40,11 +40,11 @@ jobs:
             - name: Run Astro Check
               run: pnpm astro check
               env:
-                  ENABLE_CONTENT_SYNC: false
+                  ENABLE_CONTENT_SYNC: true
             - name: Run Astro Build
               run: pnpm astro build
               env:
-                  ENABLE_CONTENT_SYNC: false
+                  ENABLE_CONTENT_SYNC: true
     deploy:
         name: Deploy to Ubuntu (self-hosted)
         needs: check
