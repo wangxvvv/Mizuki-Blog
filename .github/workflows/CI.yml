@@ -43,6 +43,12 @@ jobs:
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
+            - name: Sync content mappings
+              env:
+                  ENABLE_CONTENT_SYNC: "true"
+                  CONTENT_DIR: content
+              run: node scripts/sync-content.js
+
             - name: Run Astro Check
               run: pnpm astro check
               env:
