@@ -37,14 +37,16 @@ jobs:
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
-            # - name: Run Astro Check
-            #   run: pnpm astro check
-            #   env:
-            #       ENABLE_CONTENT_SYNC: true
+            - name: Run Astro Check
+              run: pnpm astro check
+              env:
+                  ENABLE_CONTENT_SYNC: true
+                  CONTENT_REPO_URL: ${{ secrets.CONTENT_REPO_URL }}
             - name: Run Astro Build
               run: pnpm astro build
               env:
                   ENABLE_CONTENT_SYNC: true
+                  CONTENT_REPO_URL: ${{ secrets.CONTENT_REPO_URL }}
     deploy:
         name: Deploy to Ubuntu (self-hosted)
         needs: check
