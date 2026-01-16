@@ -1211,6 +1211,7 @@ function disableAnimation() {
 	let backToTopBtn = document.getElementById("back-to-top-btn");
 	let toc = document.getElementById("toc-wrapper");
 	let navbar = document.getElementById("navbar-wrapper");
+	let lastScrollTop = document.documentElement.scrollTop;
 
 	// 节流函数
 	function throttle(func: Function, limit: number) {
@@ -1232,6 +1233,8 @@ function disableAnimation() {
 
 		// 批量处理DOM操作
 		requestAnimationFrame(() => {
+			const safeScrollTop = Math.max(scrollTop, 0);
+			const isScrollingUp = safeScrollTop < lastScrollTop;
 			if (backToTopBtn) {
 				if (scrollTop > bannerHeight) {
 					backToTopBtn.classList.remove("hide");
@@ -1248,7 +1251,7 @@ function disableAnimation() {
 				}
 			}
 
-			if (bannerEnabled && navbar) {
+			if (navbar) {
 				const isHome =
 					document.body.classList.contains("lg:is-home") &&
 					window.innerWidth >= 1024;
@@ -1256,19 +1259,26 @@ function disableAnimation() {
 					? BANNER_HEIGHT_HOME
 					: BANNER_HEIGHT;
 
-				const threshold =
-					window.innerHeight * (currentBannerHeight / 100) - 88;
-				if (scrollTop >= threshold) {
+				const threshold = bannerEnabled
+					? window.innerHeight * (currentBannerHeight / 100) - 88
+					: 80;
+				if (isScrollingUp) {
+					navbar.classList.remove("navbar-hidden");
+				} else if (safeScrollTop >= threshold) {
 					navbar.classList.add("navbar-hidden");
 				} else {
 					navbar.classList.remove("navbar-hidden");
 				}
 			}
+
+			lastScrollTop = safeScrollTop;
 		});
 	}
 
 	// 使用节流优化滚动性能
-	window.onscroll = throttle(scrollFunction, 16); // 约60fps
+	const throttledScroll = throttle(scrollFunction, 16); // 约60fps
+	window.addEventListener("scroll", throttledScroll, { passive: true });
+	requestAnimationFrame(scrollFunction);
 
 	window.onresize = () => {
 		// calculate the --banner-height-extend, which needs to be a multiple of 4 to avoid blurry text
