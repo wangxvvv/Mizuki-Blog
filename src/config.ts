@@ -39,7 +39,7 @@ export const siteConfig: SiteConfig = {
 	// 特色页面开关配置(关闭不在使用的页面有助于提升SEO,关闭后直接在顶部导航删除对应的页面就行)
 	featurePages: {
 		anime: true, // 番剧页面开关
-		diary: true, // 日记页面开关
+		diary: false, // 日记页面开关
 		friends: false, // 友链页面开关
 		projects: true, // 项目页面开关
 		skills: true, // 技能页面开关
@@ -51,7 +51,7 @@ export const siteConfig: SiteConfig = {
 	// 顶栏标题配置
 	navbarTitle: {
 		// 顶栏标题文本
-		text: "MizukiUI",
+		text: "浮光跃金",
 		// 顶栏标题图标路径，默认使用 public/assets/home/home.png
 		icon: "assets/home/home.png",
 	},
@@ -77,7 +77,7 @@ export const siteConfig: SiteConfig = {
 	// 标签样式配置
 	tagStyle: {
 		// 是否使用新样式（悬停高亮样式）还是旧样式（外框常亮样式）
-		useNewStyle: false,
+		useNewStyle: true,
 	},
 
 	// 壁纸模式配置
@@ -138,7 +138,7 @@ export const siteConfig: SiteConfig = {
 
 		homeText: {
 			enable: true, // 在主页显示自定义文本
-			title: "美しいミズキ", // 主页横幅主标题
+			title: "在光影交错处，验证世界的规则", // 主页横幅主标题
 
 			subtitle: [
 				"特別なことはないけど、君がいると十分です",
@@ -240,31 +240,31 @@ export const navBarConfig: NavBarConfig = {
 		LinkPreset.Home,
 		LinkPreset.Archive,
 		// 支持自定义导航栏链接,并且支持多级菜单,3.1版本新加
-		{
-			name: "Links",
-			url: "/links/",
-			icon: "material-symbols:link",
-			children: [
-				{
-					name: "GitHub",
-					url: "https://github.com/matsuzaka-yuki/Mizuki",
-					external: true,
-					icon: "fa6-brands:github",
-				},
-				{
-					name: "Bilibili",
-					url: "https://space.bilibili.com/701864046",
-					external: true,
-					icon: "fa6-brands:bilibili",
-				},
-				{
-					name: "Gitee",
-					url: "https://gitee.com/matsuzakayuki/Mizuki",
-					external: true,
-					icon: "mdi:git",
-				},
-			],
-		},
+		// {
+		// 	name: "Links",
+		// 	url: "/links/",
+		// 	icon: "material-symbols:link",
+		// 	children: [
+		// 		{
+		// 			name: "GitHub",
+		// 			url: "https://github.com/matsuzaka-yuki/Mizuki",
+		// 			external: true,
+		// 			icon: "fa6-brands:github",
+		// 		},
+		// 		{
+		// 			name: "Bilibili",
+		// 			url: "https://space.bilibili.com/701864046",
+		// 			external: true,
+		// 			icon: "fa6-brands:bilibili",
+		// 		},
+		// 		{
+		// 			name: "Steam",
+		// 			url: "https://steamcommunity.com/id/wangxvvv",
+		// 			external: true,
+		// 			icon: "fa6-brands:steam",
+		// 		},
+		// 	],
+		// },
 		{
 			name: "My",
 			url: "/content/",
@@ -275,11 +275,11 @@ export const navBarConfig: NavBarConfig = {
 					url: "/anime/",
 					icon: "material-symbols:movie",
 				},
-				{
-					name: "Diary",
-					url: "/diary/",
-					icon: "material-symbols:book",
-				},
+				// {
+				// 	name: "Diary",
+				// 	url: "/diary/",
+				// 	icon: "material-symbols:book",
+				// },
 				{
 					name: "Gallery",
 					url: "/albums/",
@@ -299,22 +299,10 @@ export const navBarConfig: NavBarConfig = {
 			icon: "material-symbols:info",
 			children: [
 				{
-					name: "About",
+					name: "about",
 					url: "/about/",
 					icon: "material-symbols:person",
 				},
-				{
-					name: "Friends",
-					url: "/friends/",
-					icon: "material-symbols:group",
-				},
-			],
-		},
-		{
-			name: "Others",
-			url: "#",
-			icon: "material-symbols:more-horiz",
-			children: [
 				{
 					name: "Projects",
 					url: "/projects/",
@@ -330,15 +318,47 @@ export const navBarConfig: NavBarConfig = {
 					url: "/timeline/",
 					icon: "material-symbols:timeline",
 				},
+				// {
+				// 	name: "Friends",
+				// 	url: "/friends/",
+				// 	icon: "material-symbols:group",
+				// },
 			],
 		},
+		// {
+		// 	name: "About",
+		// 	url: "/about/",
+		// 	icon: "material-symbols:person",
+		// },
+		// {
+		// 	name: "Others",
+		// 	url: "#",
+		// 	icon: "material-symbols:more-horiz",
+		// 	children: [
+		// 		// {
+		// 		// 	name: "Projects",
+		// 		// 	url: "/projects/",
+		// 		// 	icon: "material-symbols:work",
+		// 		// },
+		// 		// {
+		// 		// 	name: "Skills",
+		// 		// 	url: "/skills/",
+		// 		// 	icon: "material-symbols:psychology",
+		// 		// },
+		// 		// {
+		// 		// 	name: "Timeline",
+		// 		// 	url: "/timeline/",
+		// 		// 	icon: "material-symbols:timeline",
+		// 		// },
+		// 	],
+		// },
 	],
 };
 
 export const profileConfig: ProfileConfig = {
 	avatar: "assets/images/avatar.webp", // 相对于 /src 目录。如果以 '/' 开头，则相对于 /public 目录
-	name: "Matsuzaka Yuki",
-	bio: "The world is big, you have to go and see",
+	name: "王诩",
+	bio: "“我们做的所有的东西，都来自知识的积累，而不是凭空的想象。”",
 	typewriter: {
 		enable: true, // 启用个人简介打字机效果
 		speed: 80, // 打字速度（毫秒）
@@ -350,25 +370,25 @@ export const profileConfig: ProfileConfig = {
 			url: "https://space.bilibili.com/701864046",
 		},
 		{
-			name: "Gitee",
-			icon: "mdi:git",
+			name: "Github",
+			icon: "fa6-brands:github",
 			url: "https://gitee.com/matsuzakayuki",
 		},
 		{
-			name: "GitHub",
-			icon: "fa6-brands:github",
-			url: "https://github.com/matsuzaka-yuki",
+			name: "Steam",
+			icon: "fa6-brands:steam",
+			url: "https://steamcommunity.com/id/wangxvvv",
 		},
-		{
-			name: "Codeberg",
-			icon: "simple-icons:codeberg",
-			url: "https://codeberg.org",
-		},
-		{
-			name: "Discord",
-			icon: "fa6-brands:discord",
-			url: "https://discord.gg/MqW6TcQtVM",
-		},
+		// {
+		// 	name: "Codeberg",
+		// 	icon: "simple-icons:codeberg",
+		// 	url: "https://codeberg.org",
+		// },
+		// {
+		// 	name: "Discord",
+		// 	icon: "fa6-brands:discord",
+		// 	url: "https://discord.gg/MqW6TcQtVM",
+		// },
 	],
 };
 
