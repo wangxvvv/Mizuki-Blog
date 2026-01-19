@@ -35,16 +35,14 @@ let links: NavBarLink[] = navBarConfig.links.map(
 	},
 );
 ---
-<div id="navbar" class="z-50 onload-animation" data-transparent-mode={navbarTransparentMode} data-is-home={isHomePage}>
+<div id="navbar" class="relative z-50 onload-animation" data-transparent-mode={navbarTransparentMode} data-is-home={isHomePage}>
     <div class="absolute h-8 left-0 right-0 -top-8 bg-[var(--card-bg)] transition"></div> <!-- used for onload animation -->
-    <div class:list={[className, "!overflow-visible max-w-[var(--page-width)] h-[4.5rem] mx-auto flex items-center justify-between px-4"]}>
-        <a href={url('/')} class="btn-plain scale-animation rounded-lg h-[3.25rem] px-5 font-bold active:scale-95">
-            <div class="flex flex-row items-center text-md">
+        <a href={url('/')} class="absolute left-[285px] top-[40px] -translate-y-1/2 inline-flex items-center select-none z-20">
+        <div class="flex flex-row items-center text-md">
                 {/* 使用navbarTitle配置或默认配置 */}
                 {siteConfig.navbarTitle ? (
                     <>
-                        <img src={url(siteConfig.navbarTitle.icon || "/assets/home/home.png")} alt={siteConfig.navbarTitle.text} class="h-[1.75rem] w-[1.75rem] mb-1 mr-2 object-contain" loading="lazy" />
-                        <span class="dark:text-white text-black">{siteConfig.navbarTitle.text}</span>
+                        <img src={url(siteConfig.navbarTitle.icon || "/assets/home/home.png")} alt={siteConfig.navbarTitle.text} class="h-12 w-auto object-contain" loading="lazy" />
                     </>
                 ) : (
                     <>
@@ -52,14 +50,15 @@ let links: NavBarLink[] = navBarConfig.links.map(
                         <span class="dark:text-white text-black">{siteConfig.title}</span>
                     </>
                 )}
-            </div>
-        </a>
-        <div class="hidden md:flex items-center space-x-1">
-            {links.map((l) => {
-                return <DropdownMenu link={l} />;
-            })}
         </div>
-        <div class="flex">
+        </a>
+        <div class:list={[className, "!overflow-visible w-fit h-[4.5rem] mx-auto flex items-center gap-6 px-4"]}>
+            <div class="hidden md:flex items-center space-x-1">
+                {links.map((l) => {
+                    return <DropdownMenu link={l} />;
+                })}
+            </div>
+            <div class="flex items-center gap-1">
             <!--<SearchPanel client:load>-->
             <Search client:only="svelte"></Search>
             {siteConfig.toc.enable && <MobileTOC client:only="svelte"></MobileTOC>}
