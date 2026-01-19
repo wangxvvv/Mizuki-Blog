@@ -406,6 +406,11 @@ if (siteConfig.font) {
 		.enable-banner.is-home #sidebar-sticky {
 			@apply top-[calc(1rem_-_var(--banner-height-extend))];
 		}
+		#navbar-wrapper {
+			transition:
+				transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1),
+				opacity 320ms ease-out;
+		}
 		.navbar-hidden {
 			@apply opacity-0 -translate-y-16;
 		}
@@ -1212,6 +1217,8 @@ function disableAnimation() {
 	let toc = document.getElementById("toc-wrapper");
 	let navbar = document.getElementById("navbar-wrapper");
 	let lastScrollTop = document.documentElement.scrollTop;
+	let upScrollAccum = 0;
+	let upScrollStartTs = 0;
 
 	// 节流函数
 	function throttle(func: Function, limit: number) {
@@ -1234,7 +1241,20 @@ function disableAnimation() {
 		// 批量处理DOM操作
 		requestAnimationFrame(() => {
 			const safeScrollTop = Math.max(scrollTop, 0);
-			const isScrollingUp = safeScrollTop < lastScrollTop;
+			const now = performance.now();
+			const downDelta = safeScrollTop - lastScrollTop;
+			if (downDelta < 0) {
+				upScrollAccum += -downDelta;
+				if (!upScrollStartTs) {
+					upScrollStartTs = now;
+				}
+			} else {
+				upScrollAccum = 0;
+				upScrollStartTs = 0;
+			}
+			const isScrollingUp =
+				upScrollStartTs && now - upScrollStartTs > 320;
+			const isScrollingDown = downDelta > 6;
 			if (backToTopBtn) {
 				if (scrollTop > bannerHeight) {
 					backToTopBtn.classList.remove("hide");
@@ -1251,23 +1271,52 @@ function disableAnimation() {
 				}
 			}
 
+			// if (navbar) {
+			// 	const isHome =
+			// 		document.body.classList.contains("lg:is-home") &&
+			// 		window.innerWidth >= 1024;
+			// 	const currentBannerHeight = isHome
+			// 		? BANNER_HEIGHT_HOME
+			// 		: BANNER_HEIGHT;
+
 			if (navbar) {
 				const isHome =
 					document.body.classList.contains("lg:is-home") &&
 					window.innerWidth >= 1024;
-				const currentBannerHeight = isHome
-					? BANNER_HEIGHT_HOME
-					: BANNER_HEIGHT;
+				const isBannerMode =
+					bannerEnabled &&
+					!document.body.classList.contains("no-banner-mode");
 
-				const threshold = bannerEnabled
-					? window.innerHeight * (currentBannerHeight / 100) - 88
-					: 80;
-				if (isScrollingUp) {
-					navbar.classList.remove("navbar-hidden");
-				} else if (safeScrollTop >= threshold) {
+				const navbarEl = document.getElementById("navbar");
+				const transparentMode =
+					navbarEl?.getAttribute("data-transparent-mode") || "semi";
+				let threshold: number;
+				if (transparentMode === "full") {
+					threshold = navbar?.offsetHeight ?? 72; // 你可以改成 24/60 来微调“多快隐藏”
+				}
+				// ✅ 横幅模式：首页：等横幅滚完再隐藏（你说这个现在符合预期）
+				else if (isBannerMode && isHome) {
+					threshold =
+						window.innerHeight * (BANNER_HEIGHT_HOME / 100) - 88;
+				}
+				// ✅ 其他情况：小阈值（滚一点就隐藏）
+				else {
+					threshold = navbar?.offsetHeight ?? 72;
+				}
+				// const navbarHeight = navbar?.offsetHeight ?? 72;
+				// const threshold = navbarHeight;
+				// const threshold = bannerEnabled
+				// 	? window.innerHeight * (currentBannerHeight / 100) - 160
+				// 	: 40;
+				const isHidden = navbar.classList.contains("navbar-hidden");
+				if (isHidden) {
+					if (isScrollingUp) {
+						navbar.classList.remove("navbar-hidden");
+						upScrollAccum = 0;
+						upScrollStartTs = 0;
+					}
+				} else if (isScrollingDown && safeScrollTop >= threshold) {
 					navbar.classList.add("navbar-hidden");
-				} else {
-					navbar.classList.remove("navbar-hidden");
 				}
 			}
 
