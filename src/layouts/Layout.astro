@@ -1253,8 +1253,9 @@ function disableAnimation() {
 				upScrollStartTs = 0;
 			}
 			const isScrollingUp =
-				upScrollStartTs && now - upScrollStartTs > 320;
+				upScrollStartTs && now - upScrollStartTs > 280;
 			const isScrollingDown = downDelta > 6;
+			const shouldForceShow = safeScrollTop <= 10;
 			if (backToTopBtn) {
 				if (scrollTop > bannerHeight) {
 					backToTopBtn.classList.remove("hide");
@@ -1309,7 +1310,11 @@ function disableAnimation() {
 				// 	? window.innerHeight * (currentBannerHeight / 100) - 160
 				// 	: 40;
 				const isHidden = navbar.classList.contains("navbar-hidden");
-				if (isHidden) {
+				if (shouldForceShow) {
+					navbar.classList.remove("navbar-hidden");
+					upScrollAccum = 0;
+					upScrollStartTs = 0;
+				} else if (isHidden) {
 					if (isScrollingUp) {
 						navbar.classList.remove("navbar-hidden");
 						upScrollAccum = 0;
