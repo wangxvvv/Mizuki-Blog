@@ -17,7 +17,7 @@
   font-display: swap;
 }
 
-/* 导入 萝莉体 第二版 字体 */
+/* 导入字体 */
 @font-face {
   font-family: "霞鹜文楷";
   src: url("/assets/font/LXGWWenKai-Regular.ttf") format("truetype");
