@@ -23,9 +23,9 @@ import { GithubCardComponent } from "./src/plugins/rehype-component-github-card.
 import { rehypeMermaid } from "./src/plugins/rehype-mermaid.mjs";
 import { rehypeWrapTable } from "./src/plugins/rehype-wrap-table.mjs";
 import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.js";
-import { remarkExcerpt } from "./src/plugins/remark-excerpt.js";
+import { rehypeImageWidth } from "./src/plugins/rehype-image-width.mjs";
+import { remarkContent } from "./src/plugins/remark-content.mjs";
 import { remarkMermaid } from "./src/plugins/remark-mermaid.js";
-import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 
 // https://astro.build/config
 export default defineConfig({
@@ -118,8 +118,7 @@ export default defineConfig({
 	markdown: {
 		remarkPlugins: [
 			remarkMath,
-			remarkReadingTime,
-			remarkExcerpt,
+			remarkContent,
 			remarkGithubAdmonitionsToDirectives,
 			remarkDirective,
 			remarkSectionize,
@@ -131,6 +130,7 @@ export default defineConfig({
 			rehypeSlug,
 			rehypeWrapTable,
 			rehypeMermaid,
+			rehypeImageWidth,
 			[
 				rehypeComponents,
 				{
