@@ -343,6 +343,46 @@
   }
 }
 
+@media (max-width: 1279px) {
+  body.enable-banner #banner-wrapper ~ * #navbar:not([data-is-home="true"]) .float-panel,
+  body.enable-banner:has(#banner-wrapper) #navbar:not([data-is-home="true"]) .float-panel {
+    backdrop-filter: none !important;
+    background: var(--card-bg) !important;
+  }
+
+  body.enable-banner #banner-wrapper ~ * #navbar:not([data-is-home="true"]) .dropdown-content,
+  body.enable-banner:has(#banner-wrapper) #navbar:not([data-is-home="true"]) .dropdown-content {
+    backdrop-filter: none !important;
+    background: var(--card-bg) !important;
+  }
+
+  body.enable-banner #banner-wrapper ~ * #navbar:not([data-is-home="true"]) ~ * #display-setting,
+  body.enable-banner:has(#banner-wrapper) #navbar:not([data-is-home="true"]) ~ * #display-setting {
+    backdrop-filter: none !important;
+    background: var(--card-bg) !important;
+  }
+
+  body.enable-banner:has(#banner-wrapper) #navbar:not([data-is-home="true"]) #nav-menu-panel {
+    backdrop-filter: none !important;
+    background: var(--card-bg) !important;
+  }
+
+  body.enable-banner:has(#banner-wrapper) #navbar:not([data-is-home="true"]) #mobile-toc-panel {
+    backdrop-filter: none !important;
+    background: var(--card-bg) !important;
+  }
+
+  body.enable-banner:has(#banner-wrapper) #navbar:not([data-is-home="true"]) #search-panel {
+    backdrop-filter: none !important;
+    background: var(--card-bg) !important;
+  }
+
+  body.enable-banner:has(#banner-wrapper) #navbar:not([data-is-home="true"]) #display-setting {
+    backdrop-filter: none !important;
+    background: var(--card-bg) !important;
+  }
+}
+
 /* 暗色主题下的半透明效果 */
 /* 桌面端暗色主题 */
 @media (min-width: 1280px) {

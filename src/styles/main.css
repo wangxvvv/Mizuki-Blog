@@ -338,6 +338,20 @@ html {
       @apply expand-animation;
     }
   }
+  
+  /* Logo 链接透明背景 - 覆盖所有 btn-plain 样式 */
+  .navbar-logo-link {
+    background: transparent !important;
+    &::before {
+      background: transparent !important;
+      opacity: 0 !important;
+    }
+    &:hover::before,
+    &:active::before {
+      background: transparent !important;
+      opacity: 0 !important;
+    }
+  }
   .btn-regular {
     @apply transition-colors duration-150 flex items-center justify-center bg-[var(--btn-regular-bg)] hover:bg-[var(--btn-regular-bg-hover)] active:bg-[var(--btn-regular-bg-active)]
         text-[var(--btn-content)] dark:text-white/75;

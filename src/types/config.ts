@@ -77,8 +77,10 @@ export type SiteConfig = {
 
 	// 顶栏标题配置
 	navbarTitle?: {
-		text: string; // 顶栏标题文本
+		text?: string; // 顶栏标题文本
 		icon?: string; // 顶栏标题图标路径
+		mode?: "icon" | "logo"; // 显示模式：icon=图标+文字，logo=仅显示logo图片
+		logo?: string; // logo 图片路径（当 mode="logo" 时使用）
 	};
 
 	// 添加字体配置
