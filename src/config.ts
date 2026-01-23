@@ -33,7 +33,7 @@ export const siteConfig: SiteConfig = {
 
 	themeColor: {
 		hue: 230, // 主题色的默认色相，范围从 0 到 360。例如：红色：0，青色：200，蓝绿色：250，粉色：345
-		fixed: true, // 对访问者隐藏主题色选择器
+		fixed: false, // 对访问者隐藏主题色选择器
 	},
 
 	// 特色页面开关配置(关闭不在使用的页面有助于提升SEO,关闭后直接在顶部导航删除对应的页面就行)
@@ -137,14 +137,13 @@ export const siteConfig: SiteConfig = {
 
 		homeText: {
 			enable: true, // 在主页显示自定义文本
-			title: "在光影交错处，验证世界的规则", // 主页横幅主标题
+			title: "梦藏于心，行大于辩", // 主页横幅主标题
 
 			subtitle: [
-				"特別なことはないけど、君がいると十分です",
-				"今でもあなたは私の光",
-				"君ってさ、知らないうちに私の毎日になってたよ",
-				"君と話すと、なんか毎日がちょっと楽しくなるんだ",
-				"今日はなんでもない日。でも、ちょっとだけいい日",
+				"当前阶段专注一件事",
+				"在每一个阶段做对一件事",
+				"而且只能做对一件事",
+				"最重要的事情是处理好重中之重的事情",
 			],
 			typewriter: {
 				enable: true, // 启用副标题打字机效果
@@ -355,7 +354,7 @@ export const navBarConfig: NavBarConfig = {
 };
 
 export const profileConfig: ProfileConfig = {
-	avatar: "assets/images/avatar.webp", // 相对于 /src 目录。如果以 '/' 开头，则相对于 /public 目录
+	avatar: "assets/images/wtw.JPG", // 相对于 /src 目录。如果以 '/' 开头，则相对于 /public 目录
 	name: "王诩",
 	bio: "“我们做的所有的东西，都来自知识的积累，而不是凭空的想象。”",
 	typewriter: {
@@ -366,12 +365,12 @@ export const profileConfig: ProfileConfig = {
 		{
 			name: "Bilibli",
 			icon: "fa6-brands:bilibili",
-			url: "https://space.bilibili.com/701864046",
+			url: "https://space.bilibili.com/3502803",
 		},
 		{
 			name: "Github",
 			icon: "fa6-brands:github",
-			url: "https://gitee.com/matsuzakayuki",
+			url: "https://github.com/wangxvvv",
 		},
 		{
 			name: "Steam",
