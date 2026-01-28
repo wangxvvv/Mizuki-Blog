@@ -21,9 +21,10 @@ const seq: WALLPAPER_MODE[] = [
 ];
 let mode: WALLPAPER_MODE = $state(getStoredWallpaperMode());
 
-function switchWallpaperMode(newMode: WALLPAPER_MODE) {
+async function switchWallpaperMode(newMode: WALLPAPER_MODE) {
 	mode = newMode;
 	setWallpaperMode(newMode);
+	await panelManager.closePanel("wallpaper-mode-panel");
 }
 
 function toggleWallpaperMode() {
