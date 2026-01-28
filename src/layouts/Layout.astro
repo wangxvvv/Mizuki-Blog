@@ -274,6 +274,7 @@ if (siteConfig.font) {
 				BANNER_HEIGHT_EXTEND,
 				PAGE_WIDTH,
 				configHue,
+				pageScaling: siteConfig.pageScaling,
 			}}
 		>
 			// Load the theme from local storage
@@ -315,6 +316,53 @@ if (siteConfig.font) {
 				"--banner-height-extend",
 				`${offset}px`,
 			);
+			// 自动缩放逻辑 (Moved from MainGridLayout to here for earlier execution)
+			(function () {
+				if (pageScaling && pageScaling.enable) {
+					function adjustPageScale() {
+						const isTouch =
+							(window.matchMedia &&
+								(window.matchMedia("(pointer:coarse)")
+									.matches ||
+									window.matchMedia("(hover: none)")
+										.matches)) ||
+							"ontouchstart" in window;
+						const isPortrait =
+							window.matchMedia &&
+							window.matchMedia("(orientation: portrait)")
+								.matches;
+						const isTabletLike =
+							isTouch || window.innerWidth <= 1280;
+						if (isTabletLike || isPortrait) {
+							document.documentElement.style.fontSize = "";
+							return;
+						}
+						const targetWidth = pageScaling.targetWidth || 2000;
+						const currentWidth =
+							document.documentElement.clientWidth;
+						let scale = currentWidth / targetWidth;
+						if (scale > 1) scale = 1;
+						if (scale < 0.85) scale = 0.85;
+						document.documentElement.style.fontSize = `${scale * 100}%`;
+					}
+
+					// 立即执行一次
+					adjustPageScale();
+
+					// 监听窗口大小变化
+					window.addEventListener("resize", adjustPageScale);
+
+					// Swup 页面切换后也需要检查
+					document.addEventListener(
+						"swup:page:view",
+						adjustPageScale,
+					);
+					window.addEventListener(
+						"orientationchange",
+						adjustPageScale,
+					);
+				}
+			})();
 		</script>
 		<style
 			define:vars={{

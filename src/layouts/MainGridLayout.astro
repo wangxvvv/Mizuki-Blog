@@ -808,12 +808,12 @@ const transparentClass = shouldEnableTransparency
 
 
             {/* 侧边栏和主内容区域容器 */}
-            <div class="contents">
+            <div class="contents md:flex md:flex-col md:col-start-1 md:row-start-1 md:gap-0 lg:contents">
                 {(mobileShowSidebar || tabletShowSidebar || desktopShowSidebar) && (
-                    <SideBar class={`${sidebarClass} ${transparentClass}`} headings={headings}></SideBar>
+                    <SideBar class={`${sidebarClass} ${transparentClass}`} headings={headings} isBothSidebarMode={isBothSidebarMode}></SideBar>
                 )}
                 
-                {hasRightSidebarComponents && (
+                {isBothSidebarMode && hasRightSidebarComponents && (
                     <div class={`right-sidebar-container ${rightSidebarClass} ${transparentClass}`}>
                         <RightSideBar headings={headings}></RightSideBar>
                     </div>

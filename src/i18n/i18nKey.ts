@@ -290,7 +290,16 @@ enum I18nKey {
 	scanToRead = "scanToRead",
 	shareOnSocial = "shareOnSocial",
 	shareOnSocialDescription = "shareOnSocialDescription",
+
+	// 个人资料统计
+	profileStatsLoading = "profileStatsLoading",
+	profileStatsPageViews = "profileStatsPageViews",
+	profileStatsVisits = "profileStatsVisits",
+	profileStatsUnavailable = "profileStatsUnavailable",
+
+	// 布局切换按钮
+	switchToGridMode = "switchToGridMode",
+	switchToListMode = "switchToListMode",
 }
 
 export default I18nKey;
-

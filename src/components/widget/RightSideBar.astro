@@ -1,13 +1,25 @@
 ---
-import { widgetManager } from "../../utils/widget-manager";
+import { sidebarLayoutConfig } from "../../config";
 import Calendar from "./Calendar.astro";
 import SiteStats from "./SiteStats.astro";
 
+// 获取右侧栏组件配置
+const rightSidebarComponents = sidebarLayoutConfig.components.filter(
+	(component) => {
+		// 只显示右侧栏且启用的组件
+		return component.enable && component.sidebar === "right";
+	},
+);
+
+// 按顺序排序组件
+rightSidebarComponents.sort((a, b) => a.order - b.order);
+
 // 分离顶部固定和粘性定位的组件
-const topComponents = widgetManager.getComponentsByPosition("top", "right");
-const stickyComponents = widgetManager.getComponentsByPosition(
-	"sticky",
-	"right",
+const topComponents = rightSidebarComponents.filter(
+	(component) => component.position === "top",
+);
+const stickyComponents = rightSidebarComponents.filter(
+	(component) => component.position === "sticky",
 );
 ---
 

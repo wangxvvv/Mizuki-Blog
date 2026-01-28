@@ -36,7 +36,7 @@ export const siteConfig: SiteConfig = {
 		fixed: false, // 对访问者隐藏主题色选择器
 	},
 	themeSwitcher: {
-		enable: false, // 是否显示亮/暗主题切换按钮
+		enable: true, // 是否显示亮/暗主题切换按钮
 	},
 
 	// 特色页面开关配置(关闭不在使用的页面有助于提升SEO,关闭后直接在顶部导航删除对应的页面就行)
@@ -171,7 +171,7 @@ export const siteConfig: SiteConfig = {
 		// 留空以使用默认 favicon
 		{
 			src: "/favicon/wx.ico", // 图标文件路径
-			theme: "light", // 可选，指定主题 'light' | 'dark'
+			theme: "dark", // 可选，指定主题 'light' | 'dark'
 			sizes: "32x32", // 可选，图标大小
 		},
 	],
@@ -458,13 +458,21 @@ export const footerConfig: FooterConfig = {
  * sidebar: 控制组件在左侧栏和右侧栏,注意移动端是不会显示右侧栏的内容(unilateral模式除外),在设置了right属性的时候请确保你使用双侧(both)布局
  */
 export const sidebarLayoutConfig: SidebarLayoutConfig = {
+	// 侧边栏位置：单侧(unilateral)或双侧(both)
+	position: "both",
 	// 侧边栏组件配置列表
-	properties: [
+	components: [
 		{
 			// 组件类型：用户资料组件
 			type: "profile",
+			// 是否启用该组件
+			enable: true,
+			// 组件显示顺序（数字越小越靠前）
+			order: 1,
 			// 组件位置："top" 表示固定在顶部
 			position: "top",
+			// 所在侧边栏
+			sidebar: "left",
 			// CSS 类名，用于应用样式和动画
 			class: "onload-animation",
 			// 动画延迟时间（毫秒），用于错开动画效果
@@ -473,8 +481,14 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 		{
 			// 组件类型：公告组件
 			type: "announcement",
+			// 是否启用该组件（现在通过统一配置控制）
+			enable: true,
+			// 组件显示顺序
+			order: 2,
 			// 组件位置："top" 表示固定在顶部
 			position: "top",
+			// 所在侧边栏
+			sidebar: "left",
 			// CSS 类名
 			class: "onload-animation",
 			// 动画延迟时间
@@ -483,8 +497,14 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 		{
 			// 组件类型：分类组件
 			type: "categories",
+			// 是否启用该组件
+			enable: true,
+			// 组件显示顺序
+			order: 3,
 			// 组件位置："sticky" 表示粘性定位，可滚动
 			position: "sticky",
+			// 所在侧边栏
+			sidebar: "left",
 			// CSS 类名
 			class: "onload-animation",
 			// 动画延迟时间
@@ -498,8 +518,14 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 		{
 			// 组件类型：标签组件
 			type: "tags",
+			// 是否启用该组件
+			enable: true,
+			// 组件显示顺序
+			order: 5,
 			// 组件位置："sticky" 表示粘性定位
 			position: "top",
+			// 所在侧边栏
+			sidebar: "left",
 			// CSS 类名
 			class: "onload-animation",
 			// 动画延迟时间
@@ -513,8 +539,14 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 		{
 			// 组件类型：站点统计组件
 			type: "site-stats",
+			// 是否启用该组件
+			enable: true,
+			// 组件显示顺序
+			order: 5,
 			// 组件位置
 			position: "top",
+			// 所在侧边栏
+			sidebar: "right",
 			// CSS 类名
 			class: "onload-animation",
 			// 动画延迟时间
@@ -523,21 +555,20 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 		{
 			// 组件类型：日历组件(移动端不显示)
 			type: "calendar",
+			// 是否启用该组件
+			enable: true,
+			// 组件显示顺序
+			order: 6,
 			// 组件位置
 			position: "top",
+			// 所在侧边栏
+			sidebar: "right",
 			// CSS 类名
 			class: "onload-animation",
 			// 动画延迟时间
 			animationDelay: 250,
 		},
 	],
-
-	components: {
-		left: ["profile", "announcement", "categories", "tags"],
-		right: ["site-stats", "calendar"],
-		drawer: ["profile", "announcement"],
-	},
-
 	// 默认动画配置
 	defaultAnimation: {
 		// 是否启用默认动画
@@ -556,8 +587,19 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			mobile: 768,
 			// 平板端断点：屏幕宽度小于1280px
 			tablet: 1280,
-			// 桌面端断点：屏幕宽度小于1280px
+			// 桌面端断点：屏幕宽度大于等于1280px
 			desktop: 1280,
+		},
+		// 不同设备的布局模式
+		// hidden: 隐藏侧边栏
+		// sidebar: 显示侧边栏
+		layout: {
+			// 移动端：显示侧边栏(抽屉模式)
+			mobile: "sidebar",
+			// 平板端：显示侧边栏(抽屉模式)
+			tablet: "sidebar",
+			// 桌面端：显示侧边栏
+			desktop: "sidebar",
 		},
 	},
 };
