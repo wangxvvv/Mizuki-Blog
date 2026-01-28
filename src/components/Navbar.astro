@@ -80,7 +80,9 @@ let links: NavBarLink[] = navBarConfig.links.map(
             ]}>
                 <WallpaperSwitch client:only="svelte"></WallpaperSwitch>
             </div>
-            <LightDarkSwitch client:only="svelte"></LightDarkSwitch>
+            {siteConfig.themeSwitcher?.enable !== false && (
+                <LightDarkSwitch client:only="svelte"></LightDarkSwitch>
+            )}
             <button aria-label="Menu" name="Nav Menu" class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90 md:!hidden" id="nav-menu-switch">
                 <Icon name="material-symbols:unfold-more" class="text-[1.25rem]"></Icon>
             </button>

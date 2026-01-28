@@ -1,4 +1,4 @@
-import type {
+﻿import type {
 	AnnouncementConfig,
 	CommentConfig,
 	ExpressiveCodeConfig,
@@ -24,7 +24,7 @@ const SITE_TIMEZONE = 8; //设置你的网站时区 from -12 to 12 default in UT
 export const siteConfig: SiteConfig = {
 	title: "浮光跃金",
 	subtitle: "One demo website",
-	siteURL: "https://mizuki.mysqil.com/", // 请替换为你的站点URL，以斜杠结尾
+	siteURL: "http://wangxvvv.top/", // 请替换为你的站点URL，以斜杠结尾
 	siteStartDate: "2025-01-01", // 站点开始运行日期，用于站点统计组件计算运行天数
 
 	timeZone: SITE_TIMEZONE,
@@ -34,6 +34,9 @@ export const siteConfig: SiteConfig = {
 	themeColor: {
 		hue: 230, // 主题色的默认色相，范围从 0 到 360。例如：红色：0，青色：200，蓝绿色：250，粉色：345
 		fixed: false, // 对访问者隐藏主题色选择器
+	},
+	themeSwitcher: {
+		enable: false, // 是否显示亮/暗主题切换按钮
 	},
 
 	// 特色页面开关配置(关闭不在使用的页面有助于提升SEO,关闭后直接在顶部导航删除对应的页面就行)
@@ -51,8 +54,13 @@ export const siteConfig: SiteConfig = {
 	// 顶栏标题配置
 	navbarTitle: {
 		mode: "logo", // 启用纯 Logo 模式
-		logo: "/assets/home/f.png", // Logo 图片路径
+		logo: "/assets/home/g.png", // Logo 图片路径
 		text: "浮光跃金", // Logo 的 alt 文本（用于无障碍访问）
+	},
+	// 页面自动缩放配置
+	pageScaling: {
+		enable: true, // 是否开启自动缩放
+		targetWidth: 2000, // 目标宽度，低于此宽度时开始缩放
 	},
 
 	bangumi: {
@@ -82,7 +90,7 @@ export const siteConfig: SiteConfig = {
 	// 壁纸模式配置
 	wallpaperMode: {
 		// 默认壁纸模式：banner=顶部横幅，fullscreen=全屏壁纸，none=无壁纸
-		defaultMode: "banner",
+		defaultMode: "fullscreen",
 		// 整体布局方案切换按钮显示设置（默认："desktop"）
 		// "off" = 不显示
 		// "mobile" = 仅在移动端显示
@@ -94,14 +102,7 @@ export const siteConfig: SiteConfig = {
 	banner: {
 		// 支持单张图片或图片数组，当数组长度 > 1 时自动启用轮播
 		src: {
-			desktop: [
-				"/assets/desktop-banner/1.webp",
-				"/assets/desktop-banner/2.webp",
-				"/assets/desktop-banner/3.webp",
-				"/assets/desktop-banner/4.webp",
-				"/assets/desktop-banner/5.webp",
-				"/assets/desktop-banner/6.webp",
-			], // 桌面横幅图片
+			desktop: ["/assets/desktop-banner/LC.jpg"], // 桌面横幅图片
 			mobile: [
 				"/assets/mobile-banner/1.webp",
 				"/assets/mobile-banner/2.webp",
@@ -169,14 +170,14 @@ export const siteConfig: SiteConfig = {
 		enable: true, // 启用目录功能
 		mode: "sidebar", // 目录显示模式："float" 悬浮按钮模式，"sidebar" 侧边栏模式
 		depth: 2, // 目录深度，1-6，1 表示只显示 h1 标题，2 表示显示 h1 和 h2 标题，依此类推
-		useJapaneseBadge: true, // 使用日语假名标记（あいうえお...）代替数字，开启后会将 1、2、3... 改为 あ、い、う...
+		useJapaneseBadge: false, // 使用日语假名标记（あいうえお...）代替数字，开启后会将 1、2、3... 改为 あ、い、う...
 	},
 	showCoverInContent: true, // 在文章内容页显示文章封面
 	generateOgImages: false, // 启用生成OpenGraph图片功能,注意开启后要渲染很长时间，不建议本地调试的时候开启
 	favicon: [
 		// 留空以使用默认 favicon
 		{
-			src: "/favicon/favicon.ico", // 图标文件路径
+			src: "/favicon/wx.ico", // 图标文件路径
 			theme: "light", // 可选，指定主题 'light' | 'dark'
 			sizes: "32x32", // 可选，图标大小
 		},
@@ -206,14 +207,7 @@ export const siteConfig: SiteConfig = {
 };
 export const fullscreenWallpaperConfig: FullscreenWallpaperConfig = {
 	src: {
-		desktop: [
-			"/assets/desktop-banner/1.webp",
-			"/assets/desktop-banner/2.webp",
-			"/assets/desktop-banner/3.webp",
-			"/assets/desktop-banner/4.webp",
-			"/assets/desktop-banner/5.webp",
-			"/assets/desktop-banner/6.webp",
-		], // 桌面横幅图片
+		desktop: ["/assets/desktop-banner/P.jpeg"], // 桌面横幅图片
 		mobile: [
 			"/assets/mobile-banner/1.webp",
 			"/assets/mobile-banner/2.webp",
@@ -229,8 +223,8 @@ export const fullscreenWallpaperConfig: FullscreenWallpaperConfig = {
 		interval: 5, // 轮播间隔时间（秒）
 	},
 	zIndex: -1, // 层级，确保壁纸在背景层
-	opacity: 0.8, // 壁纸透明度
-	blur: 1, // 背景模糊程度
+	opacity: 1, // 壁纸透明度
+	blur: 0, // 背景模糊程度
 };
 
 export const navBarConfig: NavBarConfig = {
@@ -478,22 +472,13 @@ export const footerConfig: FooterConfig = {
  * sidebar: 控制组件在左侧栏和右侧栏,注意移动端是不会显示右侧栏的内容(unilateral模式除外),在设置了right属性的时候请确保你使用双侧(both)布局
  */
 export const sidebarLayoutConfig: SidebarLayoutConfig = {
-	// 侧边栏位置：单侧(unilateral)或双侧(both)
-	position: "both",
-
 	// 侧边栏组件配置列表
-	components: [
+	properties: [
 		{
 			// 组件类型：用户资料组件
 			type: "profile",
-			// 是否启用该组件
-			enable: true,
-			// 组件显示顺序（数字越小越靠前）
-			order: 1,
 			// 组件位置："top" 表示固定在顶部
 			position: "top",
-			// 所在侧边栏
-			sidebar: "left",
 			// CSS 类名，用于应用样式和动画
 			class: "onload-animation",
 			// 动画延迟时间（毫秒），用于错开动画效果
@@ -502,14 +487,8 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 		{
 			// 组件类型：公告组件
 			type: "announcement",
-			// 是否启用该组件（现在通过统一配置控制）
-			enable: true,
-			// 组件显示顺序
-			order: 2,
 			// 组件位置："top" 表示固定在顶部
 			position: "top",
-			// 所在侧边栏
-			sidebar: "left",
 			// CSS 类名
 			class: "onload-animation",
 			// 动画延迟时间
@@ -518,14 +497,8 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 		{
 			// 组件类型：分类组件
 			type: "categories",
-			// 是否启用该组件
-			enable: true,
-			// 组件显示顺序
-			order: 3,
 			// 组件位置："sticky" 表示粘性定位，可滚动
 			position: "sticky",
-			// 所在侧边栏
-			sidebar: "left",
 			// CSS 类名
 			class: "onload-animation",
 			// 动画延迟时间
@@ -539,14 +512,8 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 		{
 			// 组件类型：标签组件
 			type: "tags",
-			// 是否启用该组件
-			enable: true,
-			// 组件显示顺序
-			order: 5,
 			// 组件位置："sticky" 表示粘性定位
 			position: "top",
-			// 所在侧边栏
-			sidebar: "left",
 			// CSS 类名
 			class: "onload-animation",
 			// 动画延迟时间
@@ -560,14 +527,8 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 		{
 			// 组件类型：站点统计组件
 			type: "site-stats",
-			// 是否启用该组件
-			enable: true,
-			// 组件显示顺序
-			order: 5,
 			// 组件位置
 			position: "top",
-			// 所在侧边栏
-			sidebar: "right",
 			// CSS 类名
 			class: "onload-animation",
 			// 动画延迟时间
@@ -576,20 +537,20 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 		{
 			// 组件类型：日历组件(移动端不显示)
 			type: "calendar",
-			// 是否启用该组件
-			enable: true,
-			// 组件显示顺序
-			order: 6,
 			// 组件位置
 			position: "top",
-			// 所在侧边栏
-			sidebar: "right",
 			// CSS 类名
 			class: "onload-animation",
 			// 动画延迟时间
 			animationDelay: 250,
 		},
 	],
+
+	components: {
+		left: ["profile", "announcement", "categories", "tags"],
+		right: ["site-stats", "calendar"],
+		drawer: ["profile", "announcement"],
+	},
 
 	// 默认动画配置
 	defaultAnimation: {
@@ -611,16 +572,6 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			tablet: 1280,
 			// 桌面端断点：屏幕宽度小于1280px
 			desktop: 1280,
-		},
-		// 不同设备的布局模式
-		//hidden:不显示侧边栏(桌面端)   drawer:抽屉模式(移动端不显示)   sidebar:显示侧边栏
-		layout: {
-			// 移动端：抽屉模式
-			mobile: "sidebar",
-			// 平板端：显示侧边栏
-			tablet: "sidebar",
-			// 桌面端：显示侧边栏
-			desktop: "sidebar",
 		},
 	},
 };
