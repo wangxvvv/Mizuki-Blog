@@ -156,7 +156,7 @@ export const siteConfig: SiteConfig = {
 		},
 
 		navbar: {
-			transparentMode: "semifull", // 导航栏透明模式："semi" 半透明加圆角，"full" 完全透明，"semifull" 动态透明
+			transparentMode: "semi", // 导航栏透明模式："semi" 半透明加圆角，"full" 完全透明，"semifull" 动态透明
 		},
 	},
 	toc: {
@@ -214,8 +214,8 @@ export const fullscreenWallpaperConfig: FullscreenWallpaperConfig = {
 		interval: 5, // 轮播间隔时间（秒）
 	},
 	zIndex: -1, // 层级，确保壁纸在背景层
-	opacity: 0.8, // 壁纸透明度
-	blur: 0.1, // 背景模糊程度
+	opacity: 1, // 壁纸透明度
+	blur: 1, // 背景模糊程度
 };
 
 export const navBarConfig: NavBarConfig = {
