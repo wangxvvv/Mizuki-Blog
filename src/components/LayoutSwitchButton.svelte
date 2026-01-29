@@ -1,6 +1,6 @@
 <script lang="ts">
 import { onMount } from "svelte";
-import { sidebarLayoutConfig, siteConfig } from "../config";
+import { siteConfig, sidebarLayoutConfig } from "../config";
 import { i18n } from "@i18n/translation";
 import I18nKey from "@i18n/i18nKey";
 
