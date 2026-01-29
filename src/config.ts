@@ -171,6 +171,11 @@ export const siteConfig: SiteConfig = {
 		// 留空以使用默认 favicon
 		{
 			src: "/favicon/wx.ico", // 图标文件路径
+			theme: "light", // 可选，指定主题 'light' | 'dark'
+			sizes: "32x32", // 可选，图标大小
+		},
+		{
+			src: "/favicon/wx.ico", // 图标文件路径
 			theme: "dark", // 可选，指定主题 'light' | 'dark'
 			sizes: "32x32", // 可选，图标大小
 		},
