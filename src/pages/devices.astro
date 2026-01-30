@@ -15,216 +15,266 @@ if (!siteConfig.featurePages.devices) {
 // 设备数据
 const devices = devicesData;
 const brands = Object.keys(devices);
+const brandEntries = Object.entries(devices);
 ---
 
 <MainGridLayout title={i18n(I18nKey.devices)}>
-  <!-- 引入右侧边栏布局管理器 -->
-  <script>
-    import('../scripts/right-sidebar-layout.js');
-  </script>
-  <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32">
-    <div class="card-base z-10 px-9 py-6 relative w-full">
-      <!-- 页面标题 -->
-      <div class="flex flex-col items-start justify-center mb-8">
-        <h1 class="text-4xl font-bold text-black/90 dark:text-white/90 mb-2 relative
+  <div class="devices-page">
+    <!-- 引入右侧边栏布局管理器 -->
+    <script>
+      import("../scripts/right-sidebar-layout.js");
+    </script>
+    <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32">
+      <div class="card-base z-10 px-9 py-6 relative w-full">
+        <!-- 页面标题 -->
+        <div class="flex flex-col items-start justify-center mb-8">
+          <h1
+            class="text-4xl font-bold text-black/90 dark:text-white/90 mb-2 relative
                   before:w-1 before:h-8 before:rounded-md before:bg-[var(--primary)]
-                  before:absolute before:top-1/2 before:-translate-y-1/2 before:-left-4">
-          {i18n(I18nKey.devices)}
-        </h1>
-        <p class="text-lg text-black/60 dark:text-white/60">
-          {i18n(I18nKey.devicesSubtitle)}
-        </p>
-      </div>
+                  before:absolute before:top-1/2 before:-translate-y-1/2 before:-left-4"
+          >
+            {i18n(I18nKey.devices)}
+          </h1>
+          <p class="text-lg text-black/60 dark:text-white/60">
+            {i18n(I18nKey.devicesSubtitle)}
+          </p>
+        </div>
 
-      <!-- 筛选按钮 -->
-      <div class="mb-6">
-        <div class="filter-container flex flex-wrap gap-2">
-          {brands.map((brand, index) => (
-            <button 
-              data-brand={brand}
-              class={`filter-tag px-6 py-2.5 rounded-lg font-medium transition-all ${
-                index === 0 ? 'active' : ''
-              }`}
-            >
-              {brand}
-            </button>
+        <!-- 筛选按钮 -->
+        <div class="mb-6">
+          <div class="filter-container flex flex-wrap gap-2">
+            {brands.map((brand, index) => (
+              <button
+                data-brand={brand}
+                class={`devices-filter-tag px-6 py-2.5 rounded-lg font-medium transition-all ${
+                  index === 0 ? "active" : ""
+                }`}
+              >
+                {brand}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <!-- 设备列表 -->
+        <div id="devices-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {brandEntries.map(([brand, items], brandIndex) => (
+            items.map((device, index) => (
+              <div
+                data-brand={brand}
+                data-visible={brandIndex === 0 ? "true" : "false"}
+                aria-hidden={brandIndex === 0 ? "false" : "true"}
+                class="devices-card devices-onload group relative overflow-hidden rounded-xl border border-[var(--line-divider)] bg-[var(--card-bg)] transition-all duration-300 hover:border-[var(--primary)]/50 hover:shadow-md hover:shadow-black/5 dark:hover:shadow-white/5 hover:scale-[1.02] hover:-translate-y-0.5"
+                style={`animation-delay: ${index * 100}ms`}
+              >
+                <!-- 设备信息区域 -->
+                <div class="p-6 relative z-10">
+                  <div class="flex items-start justify-between mb-3">
+                    <h3 class="devices-title text-lg font-bold text-black/90 dark:text-white/90 group-hover:text-[var(--primary)] transition-colors duration-300">
+                      {device.name}
+                    </h3>
+                  </div>
+
+                  <div class="mb-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--btn-regular-bg)] text-black/70 dark:text-white/70 text-sm mb-3">
+                      <Icon name="material-symbols:settings-suggest-outline" class="text-sm" />
+                      <span class="font-medium">{device.specs}</span>
+                    </div>
+
+                    <p class="devices-desc text-sm text-black/60 dark:text-white/60 leading-relaxed line-clamp-2">
+                      {device.description}
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="devices-expand is-hidden inline-flex items-center gap-2 text-sm text-black/60 dark:text-white/60 hover:text-[var(--primary)] transition-colors"
+                    aria-expanded="false"
+                    aria-label="展开介绍"
+                  >
+                    <Icon name="material-symbols:keyboard-arrow-down-rounded" class="expand-icon text-xl" />
+                  </button>
+                </div>
+              </div>
+            ))
           ))}
         </div>
       </div>
-
-      <!-- 设备列表 -->
-      <div id="devices-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {devices[brands[0]].map((device, index) => (
-          <div 
-            class="device-card group relative overflow-hidden rounded-xl border border-[var(--line-divider)] bg-[var(--card-bg)] transition-all duration-300 hover:border-[var(--primary)]/50 hover:shadow-md hover:shadow-black/5 dark:hover:shadow-white/5 hover:scale-[1.02] hover:-translate-y-0.5 block"
-            style={`animation-delay: ${index * 100}ms`}
-          >
-            <!-- 设备信息区域 -->
-            <div class="p-6 relative z-10">
-              <div class="flex items-start justify-between mb-3">
-                <h3 class="text-lg font-bold text-black/90 dark:text-white/90 group-hover:text-[var(--primary)] transition-colors duration-300">
-                  {device.name}
-                </h3>
-              </div>
-              
-              <div class="mb-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--btn-regular-bg)] text-black/70 dark:text-white/70 text-sm mb-3">
-                  <Icon name="material-symbols:settings-suggest-outline" class="text-sm" />
-                  <span class="font-medium">{device.specs}</span>
-                </div>
-                
-                <p class="device-desc text-sm text-black/60 dark:text-white/60 leading-relaxed line-clamp-2">
-                  {device.description}
-                </p>
-              </div>
-
-              <button
-                type="button"
-                class="device-expand is-hidden inline-flex items-center gap-2 text-sm text-black/60 dark:text-white/60 hover:text-[var(--primary)] transition-colors"
-                aria-expanded="false"
-                aria-label="展开介绍"
-              >
-                <Icon name="material-symbols:keyboard-arrow-down-rounded" class="expand-icon text-xl transition-transform" />
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
+
+    <script is:inline>
+      (() => {
+        const page = document.querySelector(".devices-page");
+        if (!page) return;
+
+        const brandTabs = page.querySelectorAll(".devices-filter-tag");
+        const devicesContainer = page.querySelector("#devices-container");
+        if (!devicesContainer) return;
+
+        const measureRoot = document.createElement("div");
+        measureRoot.className = "devices-measure-root";
+        measureRoot.setAttribute("aria-hidden", "true");
+        page.appendChild(measureRoot);
+
+        const doesDescriptionOverflow = (description) => {
+          if (!description || description.clientWidth === 0) return false;
+
+          const clampHeight = description.getBoundingClientRect().height;
+          const clone = description.cloneNode(true);
+          clone.classList.remove("line-clamp-2");
+          clone.style.position = "absolute";
+          clone.style.visibility = "hidden";
+          clone.style.pointerEvents = "none";
+          clone.style.height = "auto";
+          clone.style.maxHeight = "none";
+          clone.style.display = "block";
+          clone.style.width = `${description.clientWidth}px`;
+          measureRoot.appendChild(clone);
+          const fullHeight = clone.getBoundingClientRect().height;
+          clone.remove();
+
+          const diff = fullHeight - clampHeight;
+          if (diff > 0.5) return true;
+
+          const lineHeight = parseFloat(getComputedStyle(description).lineHeight);
+          if (Number.isFinite(lineHeight) && lineHeight > 0) {
+            const lines = fullHeight / lineHeight;
+            return lines > 2.05;
+          }
+
+          return false;
+        };
+
+        const updateExpandButtons = () => {
+          const cards = devicesContainer.querySelectorAll('.devices-card[data-visible="true"]');
+          cards.forEach((card) => {
+            const description = card.querySelector(".devices-desc");
+            const expandButton = card.querySelector(".devices-expand");
+            if (!description || !expandButton) return;
+
+            if (expandButton.getAttribute("aria-expanded") === "true") {
+              expandButton.classList.add("is-expanded");
+              expandButton.classList.remove("is-hidden");
+              return;
+            }
+
+            if (!description.classList.contains("line-clamp-2")) {
+              description.classList.add("line-clamp-2");
+              expandButton.setAttribute("aria-expanded", "false");
+              expandButton.setAttribute("aria-label", "展开介绍");
+              expandButton.classList.remove("is-expanded");
+            }
+
+            const needsExpand = doesDescriptionOverflow(description);
+            if (needsExpand) {
+              expandButton.classList.remove("is-hidden");
+            } else {
+              expandButton.classList.add("is-hidden");
+            }
+          });
+        };
+
+        let updateFrame = 0;
+        const scheduleUpdate = () => {
+          if (updateFrame) cancelAnimationFrame(updateFrame);
+          updateFrame = requestAnimationFrame(() => {
+            updateFrame = 0;
+            requestAnimationFrame(updateExpandButtons);
+          });
+        };
+
+        const resetCardState = (card) => {
+          const description = card.querySelector(".devices-desc");
+          const expandButton = card.querySelector(".devices-expand");
+          if (!description || !expandButton) return;
+          description.classList.add("line-clamp-2");
+          expandButton.setAttribute("aria-expanded", "false");
+          expandButton.setAttribute("aria-label", "展开介绍");
+          expandButton.classList.remove("is-expanded");
+        };
+
+        const playCardAnimation = (card) => {
+          card.classList.remove("devices-onload");
+          void card.offsetWidth;
+          card.classList.add("devices-onload");
+        };
+
+        devicesContainer.addEventListener("click", (event) => {
+          const target = event.target;
+          const expandButton = target.closest(".devices-expand");
+          if (!expandButton || expandButton.classList.contains("is-hidden")) return;
+
+          const card = expandButton.closest(".devices-card");
+          const description = card?.querySelector(".devices-desc");
+          if (!description) return;
+
+          const isExpanded = expandButton.getAttribute("aria-expanded") === "true";
+          if (isExpanded) {
+            description.classList.add("line-clamp-2");
+            expandButton.setAttribute("aria-expanded", "false");
+            expandButton.setAttribute("aria-label", "展开介绍");
+            expandButton.classList.remove("is-expanded");
+          } else {
+            description.classList.remove("line-clamp-2");
+            expandButton.setAttribute("aria-expanded", "true");
+            expandButton.setAttribute("aria-label", "收起介绍");
+            expandButton.classList.add("is-expanded");
+          }
+
+          scheduleUpdate();
+        });
+
+        brandTabs.forEach((tab) => {
+          tab.addEventListener("click", () => {
+            const brand = tab.dataset.brand;
+            if (!brand) return;
+
+            // 移除所有激活状态
+            brandTabs.forEach((item) => item.classList.remove("active"));
+            // 激活当前点击的标签
+            tab.classList.add("active");
+
+            const cards = devicesContainer.querySelectorAll(".devices-card");
+            cards.forEach((card) => {
+              const isMatch = card.dataset.brand === brand;
+              card.dataset.visible = isMatch ? "true" : "false";
+              card.setAttribute("aria-hidden", isMatch ? "false" : "true");
+
+              if (isMatch) {
+                resetCardState(card);
+                playCardAnimation(card);
+              }
+            });
+
+            scheduleUpdate();
+          });
+        });
+
+        scheduleUpdate();
+        if (document.fonts?.ready) {
+          document.fonts.ready.then(scheduleUpdate);
+        }
+
+        let resizeTimer;
+        window.addEventListener("resize", () => {
+          window.clearTimeout(resizeTimer);
+          resizeTimer = window.setTimeout(scheduleUpdate, 150);
+        });
+
+        if ("ResizeObserver" in window) {
+          const resizeObserver = new ResizeObserver(() => scheduleUpdate());
+          resizeObserver.observe(devicesContainer);
+        }
+      })();
+    </script>
   </div>
 
-  <script is:inline define:vars={{ devices }}>
-    const brandTabs = document.querySelectorAll('.filter-tag');
-    const devicesContainer = document.getElementById('devices-container');
-
-    const updateExpandButtons = () => {
-      const cards = devicesContainer.querySelectorAll('.device-card');
-      cards.forEach(card => {
-        const description = card.querySelector('.device-desc');
-        const expandButton = card.querySelector('.device-expand');
-        if (!description || !expandButton) return;
-
-        if (card.classList.contains('is-expanded')) {
-          expandButton.classList.remove('is-hidden');
-          return;
-        }
-
-        if (!description.classList.contains('line-clamp-2')) {
-          description.classList.add('line-clamp-2');
-          expandButton.setAttribute('aria-expanded', 'false');
-          expandButton.setAttribute('aria-label', '展开介绍');
-        }
-
-        const needsExpand = description.scrollHeight > description.clientHeight + 1;
-        if (needsExpand) {
-          expandButton.classList.remove('is-hidden');
-        } else {
-          expandButton.classList.add('is-hidden');
-        }
-      });
-    };
-
-    devicesContainer.addEventListener('click', (event) => {
-      const target = event.target;
-      const expandButton = target.closest('.device-expand');
-      if (!expandButton || expandButton.classList.contains('is-hidden')) return;
-
-      const card = expandButton.closest('.device-card');
-      const description = card?.querySelector('.device-desc');
-      if (!description) return;
-
-      const isExpanded = expandButton.getAttribute('aria-expanded') === 'true';
-      if (isExpanded) {
-        description.classList.add('line-clamp-2');
-        expandButton.setAttribute('aria-expanded', 'false');
-        expandButton.setAttribute('aria-label', '展开介绍');
-        card.classList.remove('is-expanded');
-      } else {
-        description.classList.remove('line-clamp-2');
-        expandButton.setAttribute('aria-expanded', 'true');
-        expandButton.setAttribute('aria-label', '收起介绍');
-        card.classList.add('is-expanded');
-      }
-
-      updateExpandButtons();
-    });
-
-    brandTabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const brand = tab.dataset.brand;
-        
-        // 移除所有激活状态
-        brandTabs.forEach(t => {
-          t.classList.remove('active');
-        });
-        // 激活当前点击的标签
-        tab.classList.add('active');
-
-        const brandDevices = devices[brand] || [];
-        devicesContainer.innerHTML = brandDevices.map((device, index) => `
-          <div 
-            class="device-card group relative overflow-hidden rounded-xl border border-[var(--line-divider)] bg-[var(--card-bg)] transition-all duration-300 hover:border-[var(--primary)]/50 hover:shadow-md hover:shadow-black/5 dark:hover:shadow-white/5 hover:scale-[1.02] hover:-translate-y-0.5 block"
-            style="animation-delay: ${index * 100}ms; animation: fadeInUp 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; opacity: 0;"
-          >
-            <!-- 设备信息区域 -->
-            <div class="p-6 relative z-10">
-              <div class="flex items-start justify-between mb-3">
-                <h3 class="text-lg font-bold text-black/90 dark:text-white/90 group-hover:text-[var(--primary)] transition-colors duration-300">
-                  ${device.name}
-                </h3>
-              </div>
-              
-              <div class="mb-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--btn-regular-bg)] text-black/70 dark:text-white/70 text-sm mb-3">
-                  <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  <span class="font-medium">${device.specs}</span>
-                </div>
-                
-                <p class="device-desc text-sm text-black/60 dark:text-white/60 leading-relaxed line-clamp-2">
-                  ${device.description}
-                </p>
-              </div>
-
-              <button
-                type="button"
-                class="device-expand is-hidden inline-flex items-center gap-2 text-sm text-black/60 dark:text-white/60 hover:text-[var(--primary)] transition-colors"
-                aria-expanded="false"
-                aria-label="展开介绍"
-              >
-                <svg class="expand-icon w-5 h-5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6z" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        `).join('');
-
-        requestAnimationFrame(updateExpandButtons);
-      });
-    });
-
-    updateExpandButtons();
-
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-      window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(updateExpandButtons, 150);
-    });
-  </script>
-
   <style>
-    .filter-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      margin-bottom: 1rem;
+    .devices-page {
+      position: relative;
     }
-    
-    .filter-tag {
-      padding: 0.625rem 1.25rem;
+
+    .devices-filter-tag {
       border: 1px solid var(--line-divider);
       border-radius: var(--radius-large);
       background: var(--btn-regular-bg);
@@ -237,9 +287,9 @@ const brands = Object.keys(devices);
       position: relative;
       overflow: hidden;
     }
-    
-    .filter-tag::before {
-      content: '';
+
+    .devices-filter-tag::before {
+      content: "";
       position: absolute;
       top: 0;
       left: 0;
@@ -250,29 +300,49 @@ const brands = Object.keys(devices);
       transition: opacity 0.3s ease;
       z-index: -1;
     }
-    
-    .filter-tag:hover:not(.active) {
+
+    .devices-filter-tag:hover:not(.active) {
       background: var(--btn-hover-bg);
       border-color: var(--primary);
       transform: translateY(-2px);
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
-    
-    .filter-tag.active {
+
+    .devices-filter-tag.active {
       background: var(--primary);
       color: white;
       border-color: var(--primary);
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.3);
     }
-    
-    .filter-tag.active:hover {
+
+    .devices-filter-tag.active:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 16px rgba(var(--color-primary-rgb), 0.4);
     }
-    
-    .device-expand.is-hidden {
+
+    .devices-card[data-visible="false"] {
       display: none;
+    }
+
+    .devices-expand {
+      transition: transform 0.2s ease;
+      transform-origin: center;
+    }
+
+    .devices-expand.is-hidden {
+      display: none;
+    }
+
+    .devices-measure-root {
+      position: fixed;
+      left: -10000px;
+      top: -10000px;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+      visibility: hidden;
+      pointer-events: none;
     }
 
     /* 设备卡片动画效果 */
@@ -286,12 +356,12 @@ const brands = Object.keys(devices);
         transform: translateY(0);
       }
     }
-    
-    .onload-animation {
+
+    .devices-onload {
       animation: fadeInUp 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
       opacity: 0;
     }
-    
+
     /* 卡片内容文本截断 */
     .line-clamp-2 {
       display: -webkit-box;
@@ -299,10 +369,10 @@ const brands = Object.keys(devices);
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
-    
+
     /* 设备卡片微妙的悬停效果 */
-    .device-card::after {
-      content: '';
+    .devices-card::after {
+      content: "";
       position: absolute;
       inset: 0;
       border-radius: 0.75rem;
@@ -311,40 +381,35 @@ const brands = Object.keys(devices);
       transition: opacity 0.4s ease;
       pointer-events: none;
     }
-    
-    .device-card:hover::after {
+
+    .devices-card:hover::after {
       opacity: 1;
     }
-    
-    /* 设备名称和规格的文本样式 */
-    .device-card h3 {
+
+    /* 设备名称的文本样式 */
+    .devices-title {
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     }
 
-    .device-card.is-expanded .expand-icon,
-    .device-card.is-expanded .device-expand .text-xl {
+    .devices-expand.is-expanded {
       transform: rotate(180deg);
     }
-    
+
     /* 响应式调整 */
     @media (max-width: 640px) {
-      .filter-container {
-        gap: 0.5rem;
-      }
-      
-      .filter-tag {
+      .devices-filter-tag {
         padding: 0.5rem 1rem;
         font-size: 0.8rem;
       }
-      
-      .device-card .p-6 {
+
+      .devices-card .p-6 {
         padding: 1rem;
       }
     }
-    
+
     /* 在深色模式下微妙的阴影效果 */
     @media (prefers-color-scheme: dark) {
-      .device-card:hover {
+      .devices-card:hover {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       }
     }
