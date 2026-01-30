@@ -1,6 +1,32 @@
 .custom-md {
   h1 {
+    @apply text-4xl;
+    @apply mt-10 mb-5;
+  }
+
+  h2 {
     @apply text-3xl;
+    @apply mt-8 mb-4;
+  }
+
+  h3 {
+    @apply text-2xl;
+    @apply mt-6 mb-3;
+  }
+
+  h4 {
+    @apply text-xl;
+    @apply mt-5 mb-2.5;
+  }
+
+  h5 {
+    @apply text-lg;
+    @apply mt-4 mb-2;
+  }
+
+  h6 {
+    @apply text-base;
+    @apply mt-3 mb-2;
   }
 
   :is(h1, h2, h3, h4, h5, h6) {
