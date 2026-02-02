@@ -28,6 +28,8 @@ jobs:
               uses: actions/checkout@v6
               with:
                   repository: wangxvvv/Blog
+                  token: ${{ secrets.CONTENT_REPO_TOKEN }}
+                  ref: main
                   path: content
 
             - name: Setup Node.js
@@ -60,6 +62,12 @@ jobs:
               env:
                   ENABLE_CONTENT_SYNC: "true"
                   CONTENT_DIR: content
+            - name: Upload build artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: site-dist
+                  path: dist
+
     deploy:
         name: Deploy to Ubuntu (self-hosted)
         needs: check
@@ -77,24 +85,11 @@ jobs:
               with:
                   ref: main
 
-            - name: Setup Node
-              uses: actions/setup-node@v6
+            - name: Download build artifact
+              uses: actions/download-artifact@v4
               with:
-                  node-version: lts/*
-
-            - name: Setup pnpm
-              uses: pnpm/action-setup@v4
-              with:
-                  run_install: false
-
-            - name: Install dependencies
-              run: pnpm install --frozen-lockfile
-
-            - name: Build (sync content + build)
-              env:
-                  ENABLE_CONTENT_SYNC: "true"
-                  CONTENT_REPO_URL: ${{ secrets.CONTENT_REPO_URL }}
-              run: pnpm build
+                  name: site-dist
+                  path: dist
 
             - name: Publish to nginx (atomic)
               run: |
