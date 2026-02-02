@@ -13,16 +13,16 @@
 @font-face {
   font-family: "ZenMaruGothic-Medium";
   src: url("/assets/font/ZenMaruGothic-Medium.woff2") format("woff2");
-  font-weight: 500;
+  font-weight: 400;
   font-display: swap;
 }
 
-/* 导入 萝莉体 第二版 字体 */
+/* 导入字体 */
 @font-face {
-  font-family: "萝莉体 第二版";
-  src: url("/assets/font/萝莉体 第二版.woff2") format("woff2");
+  font-family: "霞鹜文楷";
+  src: url("/assets/font/LXGWWenKai-Regular.ttf") format("truetype");
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   font-display: swap;
 }
 
@@ -338,6 +338,20 @@ html {
       @apply expand-animation;
     }
   }
+  
+  /* Logo 链接透明背景 - 覆盖所有 btn-plain 样式 */
+  .navbar-logo-link {
+    background: transparent !important;
+    &::before {
+      background: transparent !important;
+      opacity: 0 !important;
+    }
+    &:hover::before,
+    &:active::before {
+      background: transparent !important;
+      opacity: 0 !important;
+    }
+  }
   .btn-regular {
     @apply transition-colors duration-150 flex items-center justify-center bg-[var(--btn-regular-bg)] hover:bg-[var(--btn-regular-bg-hover)] active:bg-[var(--btn-regular-bg-active)]
         text-[var(--btn-content)] dark:text-white/75;
@@ -425,13 +439,11 @@ html {
     @apply absolute top-full left-0 pt-2 opacity-0 invisible pointer-events-none transition-all duration-200 ease-out transform translate-y-[-8px] z-50;
   }
 
-  .dropdown-container:hover .dropdown-menu,
-  .dropdown-container:focus-within .dropdown-menu {
+  .dropdown-container[data-open="true"] .dropdown-menu {
     @apply opacity-100 visible pointer-events-auto translate-y-0;
   }
 
-  .dropdown-container:hover .dropdown-arrow,
-  .dropdown-container:focus-within .dropdown-arrow {
+  .dropdown-container[data-open="true"] .dropdown-arrow {
     @apply rotate-180;
   }
 
@@ -472,7 +484,7 @@ html {
   }
 
   /* 无障碍支持 */
-  .dropdown-container:focus-within .dropdown-menu {
+  .dropdown-container[data-open="true"] .dropdown-menu {
     @apply opacity-100 visible pointer-events-auto translate-y-0;
   }
 

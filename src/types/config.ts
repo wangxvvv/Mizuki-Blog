@@ -56,6 +56,9 @@ export type SiteConfig = {
 		hue: number;
 		fixed: boolean;
 	};
+	themeSwitcher?: {
+		enable: boolean; // 是否显示亮/暗主题切换按钮
+	};
 
 	// 特色页面开关配置
 	featurePages: {
@@ -74,11 +77,17 @@ export type SiteConfig = {
 		defaultMode: "list" | "grid"; // 默认布局模式：list=列表模式，grid=网格模式
 		allowSwitch: boolean; // 是否允许用户切换布局
 	};
+	pageScaling?: {
+		enable: boolean; // 是否开启自动缩放
+		targetWidth?: number; // 目标宽度，低于此宽度时开始缩放
+	};
 
 	// 顶栏标题配置
 	navbarTitle?: {
-		text: string; // 顶栏标题文本
+		text?: string; // 顶栏标题文本
 		icon?: string; // 顶栏标题图标路径
+		mode?: "icon" | "logo"; // 显示模式：icon=图标+文字，logo=仅显示logo图片
+		logo?: string; // logo 图片路径（当 mode="logo" 时使用）
 	};
 
 	// 添加字体配置
@@ -186,7 +195,7 @@ export enum LinkPreset {
 	Friends = 3,
 	Anime = 4,
 	Diary = 5,
-	Gallery = 6,
+	Albums = 6,
 	Projects = 7,
 	Skills = 8,
 	Timeline = 9,
@@ -365,8 +374,8 @@ export type SidebarLayoutConfig = {
 			desktop: number; // 桌面端断点（px）
 		};
 		layout: {
-			mobile: "hidden" | "bottom" | "drawer" | "sidebar"; // 移动端布局模式
-			tablet: "sidebar" | "bottom" | "drawer"; // 平板端布局模式
+			mobile: "hidden" | "sidebar"; // 移动端布局模式
+			tablet: "hidden" | "sidebar"; // 平板端布局模式
 			desktop: "sidebar"; // 桌面端布局模式
 		};
 	};

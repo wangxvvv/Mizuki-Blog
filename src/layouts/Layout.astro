@@ -274,6 +274,7 @@ if (siteConfig.font) {
 				BANNER_HEIGHT_EXTEND,
 				PAGE_WIDTH,
 				configHue,
+				pageScaling: siteConfig.pageScaling,
 			}}
 		>
 			// Load the theme from local storage
@@ -315,6 +316,53 @@ if (siteConfig.font) {
 				"--banner-height-extend",
 				`${offset}px`,
 			);
+			// 自动缩放逻辑 (Moved from MainGridLayout to here for earlier execution)
+			(function () {
+				if (pageScaling && pageScaling.enable) {
+					function adjustPageScale() {
+						const isTouch =
+							(window.matchMedia &&
+								(window.matchMedia("(pointer:coarse)")
+									.matches ||
+									window.matchMedia("(hover: none)")
+										.matches)) ||
+							"ontouchstart" in window;
+						const isPortrait =
+							window.matchMedia &&
+							window.matchMedia("(orientation: portrait)")
+								.matches;
+						const isTabletLike =
+							isTouch || window.innerWidth <= 1280;
+						if (isTabletLike || isPortrait) {
+							document.documentElement.style.fontSize = "";
+							return;
+						}
+						const targetWidth = pageScaling.targetWidth || 2000;
+						const currentWidth =
+							document.documentElement.clientWidth;
+						let scale = currentWidth / targetWidth;
+						if (scale > 1) scale = 1;
+						if (scale < 0.85) scale = 0.85;
+						document.documentElement.style.fontSize = `${scale * 100}%`;
+					}
+
+					// 立即执行一次
+					adjustPageScale();
+
+					// 监听窗口大小变化
+					window.addEventListener("resize", adjustPageScale);
+
+					// Swup 页面切换后也需要检查
+					document.addEventListener(
+						"swup:page:view",
+						adjustPageScale,
+					);
+					window.addEventListener(
+						"orientationchange",
+						adjustPageScale,
+					);
+				}
+			})();
 		</script>
 		<style
 			define:vars={{
@@ -405,6 +453,11 @@ if (siteConfig.font) {
 		}
 		.enable-banner.is-home #sidebar-sticky {
 			@apply top-[calc(1rem_-_var(--banner-height-extend))];
+		}
+		#navbar-wrapper {
+			transition:
+				transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1),
+				opacity 320ms ease-out;
 		}
 		.navbar-hidden {
 			@apply opacity-0 -translate-y-16;
@@ -1211,6 +1264,9 @@ function disableAnimation() {
 	let backToTopBtn = document.getElementById("back-to-top-btn");
 	let toc = document.getElementById("toc-wrapper");
 	let navbar = document.getElementById("navbar-wrapper");
+	let lastScrollTop = document.documentElement.scrollTop;
+	let upScrollAccum = 0;
+	let upScrollStartTs = 0;
 
 	// 节流函数
 	function throttle(func: Function, limit: number) {
@@ -1232,6 +1288,22 @@ function disableAnimation() {
 
 		// 批量处理DOM操作
 		requestAnimationFrame(() => {
+			const safeScrollTop = Math.max(scrollTop, 0);
+			const now = performance.now();
+			const downDelta = safeScrollTop - lastScrollTop;
+			if (downDelta < 0) {
+				upScrollAccum += -downDelta;
+				if (!upScrollStartTs) {
+					upScrollStartTs = now;
+				}
+			} else {
+				upScrollAccum = 0;
+				upScrollStartTs = 0;
+			}
+			const isScrollingUp =
+				upScrollStartTs && now - upScrollStartTs > 280;
+			const isScrollingDown = downDelta > 6;
+			const shouldForceShow = safeScrollTop <= 10;
 			if (backToTopBtn) {
 				if (scrollTop > bannerHeight) {
 					backToTopBtn.classList.remove("hide");
@@ -1248,27 +1320,67 @@ function disableAnimation() {
 				}
 			}
 
-			if (bannerEnabled && navbar) {
+			// if (navbar) {
+			// 	const isHome =
+			// 		document.body.classList.contains("lg:is-home") &&
+			// 		window.innerWidth >= 1024;
+			// 	const currentBannerHeight = isHome
+			// 		? BANNER_HEIGHT_HOME
+			// 		: BANNER_HEIGHT;
+
+			if (navbar) {
 				const isHome =
 					document.body.classList.contains("lg:is-home") &&
 					window.innerWidth >= 1024;
-				const currentBannerHeight = isHome
-					? BANNER_HEIGHT_HOME
-					: BANNER_HEIGHT;
+				const isBannerMode =
+					bannerEnabled &&
+					!document.body.classList.contains("no-banner-mode");
 
-				const threshold =
-					window.innerHeight * (currentBannerHeight / 100) - 88;
-				if (scrollTop >= threshold) {
-					navbar.classList.add("navbar-hidden");
-				} else {
+				const navbarEl = document.getElementById("navbar");
+				const transparentMode =
+					navbarEl?.getAttribute("data-transparent-mode") || "semi";
+				let threshold: number;
+				if (transparentMode === "full") {
+					threshold = navbar?.offsetHeight ?? 72; // 你可以改成 24/60 来微调“多快隐藏”
+				}
+				// ✅ 横幅模式：首页：等横幅滚完再隐藏（你说这个现在符合预期）
+				else if (isBannerMode && isHome) {
+					threshold =
+						window.innerHeight * (BANNER_HEIGHT_HOME / 100) - 88;
+				}
+				// ✅ 其他情况：小阈值（滚一点就隐藏）
+				else {
+					threshold = navbar?.offsetHeight ?? 72;
+				}
+				// const navbarHeight = navbar?.offsetHeight ?? 72;
+				// const threshold = navbarHeight;
+				// const threshold = bannerEnabled
+				// 	? window.innerHeight * (currentBannerHeight / 100) - 160
+				// 	: 40;
+				const isHidden = navbar.classList.contains("navbar-hidden");
+				if (shouldForceShow) {
 					navbar.classList.remove("navbar-hidden");
+					upScrollAccum = 0;
+					upScrollStartTs = 0;
+				} else if (isHidden) {
+					if (isScrollingUp) {
+						navbar.classList.remove("navbar-hidden");
+						upScrollAccum = 0;
+						upScrollStartTs = 0;
+					}
+				} else if (isScrollingDown && safeScrollTop >= threshold) {
+					navbar.classList.add("navbar-hidden");
 				}
 			}
+
+			lastScrollTop = safeScrollTop;
 		});
 	}
 
 	// 使用节流优化滚动性能
-	window.onscroll = throttle(scrollFunction, 16); // 约60fps
+	const throttledScroll = throttle(scrollFunction, 16); // 约60fps
+	window.addEventListener("scroll", throttledScroll, { passive: true });
+	requestAnimationFrame(scrollFunction);
 
 	window.onresize = () => {
 		// calculate the --banner-height-extend, which needs to be a multiple of 4 to avoid blurry text
