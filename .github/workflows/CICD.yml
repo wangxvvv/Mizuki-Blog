@@ -55,19 +55,13 @@ jobs:
               run: pnpm astro check
               env:
                   ENABLE_CONTENT_SYNC: "true"
-                  CONTENT_DIR: content
+                  CONTENT_DIR: ${{secrets.CONTENT_REPO_URL}}
 
             - name: Run Astro Build
-              run: pnpm astro build
+              run: pnpm build
               env:
                   ENABLE_CONTENT_SYNC: "true"
-                  CONTENT_DIR: content
-            - name: Upload build artifact
-              uses: actions/upload-artifact@v4
-              with:
-                  name: site-dist
-                  path: dist
-
+                  CONTENT_DIR: ${{secrets.CONTENT_REPO_URL}}
     deploy:
         name: Deploy to Ubuntu (self-hosted)
         needs: check
@@ -85,11 +79,24 @@ jobs:
               with:
                   ref: main
 
-            - name: Download build artifact
-              uses: actions/download-artifact@v4
+            - name: Setup Node
+              uses: actions/setup-node@v6
               with:
-                  name: site-dist
-                  path: dist
+                  node-version: lts/*
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  run_install: false
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Build (sync content + build)
+              env:
+                  ENABLE_CONTENT_SYNC: "true"
+                  CONTENT_REPO_URL: ${{ secrets.CONTENT_REPO_URL }}
+              run: pnpm build
 
             - name: Publish to nginx (atomic)
               run: |
