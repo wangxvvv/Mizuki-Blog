@@ -20,7 +20,7 @@
 /* 导入字体 */
 @font-face {
   font-family: "霞鹜文楷";
-  src: url("/assets/font/LXGWWenKai-Regular.ttf") format("truetype");
+  src: url("/assets/font/LXGWWenKai-Regular.woff2") format("woff2");
   font-style: normal;
   font-weight: 500;
   font-display: swap;
@@ -338,7 +338,7 @@ html {
       @apply expand-animation;
     }
   }
-  
+
   /* Logo 链接透明背景 - 覆盖所有 btn-plain 样式 */
   .navbar-logo-link {
     background: transparent !important;
