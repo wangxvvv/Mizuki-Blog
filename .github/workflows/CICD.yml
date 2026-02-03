@@ -24,6 +24,14 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v6
 
+            - name: Checkout content repo
+              uses: actions/checkout@v6
+              with:
+                  repository: wangxvvv/Blog
+                  token: ${{ secrets.CONTENT_REPO_TOKEN }}
+                  ref: main
+                  path: content
+
             - name: Setup Node.js
               uses: actions/setup-node@v6
               with:
