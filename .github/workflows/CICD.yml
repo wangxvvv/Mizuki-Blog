@@ -50,7 +50,7 @@ jobs:
                   CONTENT_DIR: content
 
             - name: Run Astro Build
-              run: pnpm astro build
+              run: pnpm build
               env:
                   ENABLE_CONTENT_SYNC: "true"
                   CONTENT_DIR: content
