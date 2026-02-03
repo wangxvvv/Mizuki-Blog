@@ -47,13 +47,13 @@ jobs:
               run: pnpm astro check
               env:
                   ENABLE_CONTENT_SYNC: "true"
-                  CONTENT_DIR: content
+                  CONTENT_DIR: ${{secrets.CONTENT_REPO_URL}}
 
             - name: Run Astro Build
               run: pnpm build
               env:
                   ENABLE_CONTENT_SYNC: "true"
-                  CONTENT_DIR: content
+                  CONTENT_DIR: ${{secrets.CONTENT_REPO_URL}}
     deploy:
         name: Deploy to Ubuntu (self-hosted)
         needs: check
