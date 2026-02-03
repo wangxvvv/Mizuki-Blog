@@ -10,7 +10,7 @@ on:
     workflow_dispatch:
 
 concurrency:
-    group: ${{ github.workflow }}-${{ github.ref }}
+    group: mizuki-ci-${{ github.ref }}
     cancel-in-progress: true
 
 permissions:
@@ -18,14 +18,15 @@ permissions:
 
 jobs:
     check:
-        name: Astro Check
+        name: CI · Astro Check & Build
         runs-on: ubuntu-latest
+
         steps:
-            - name: Checkout
-              uses: actions/checkout@v6
+            - name: Checkout code
+              uses: actions/checkout@v4
 
             - name: Checkout content repo
-              uses: actions/checkout@v6
+              uses: actions/checkout@v4
               with:
                   repository: wangxvvv/Blog
                   token: ${{ secrets.CONTENT_REPO_TOKEN }}
@@ -33,9 +34,9 @@ jobs:
                   path: content
 
             - name: Setup Node.js
-              uses: actions/setup-node@v6
+              uses: actions/setup-node@v4
               with:
-                  node-version: lts/*
+                  node-version: 20
 
             - name: Setup pnpm
               uses: pnpm/action-setup@v4
@@ -51,38 +52,40 @@ jobs:
                   CONTENT_DIR: content
               run: node scripts/sync-content.js
 
-            - name: Run Astro Check
+            - name: Astro Check
               run: pnpm astro check
-              env:
-                  ENABLE_CONTENT_SYNC: "true"
-                  CONTENT_DIR: ${{secrets.CONTENT_REPO_URL}}
 
-            - name: Run Astro Build
-              run: pnpm build
-              env:
-                  ENABLE_CONTENT_SYNC: "true"
-                  CONTENT_DIR: ${{secrets.CONTENT_REPO_URL}}
+            - name: Astro Build
+              run: pnpm astro build
+
     deploy:
-        name: Deploy to Ubuntu (self-hosted)
+        name: Deploy · Ubuntu (self-hosted)
         needs: check
         runs-on: self-hosted
 
-        # 只允许 main 的 push、dispatch、手动触发 才部署（PR 不部署）
         if: |
             github.event_name == 'push' ||
             github.event_name == 'repository_dispatch' ||
             github.event_name == 'workflow_dispatch'
 
         steps:
-            - name: Checkout code (always main)
+            - name: Checkout code (main)
               uses: actions/checkout@v4
               with:
                   ref: main
 
-            - name: Setup Node
-              uses: actions/setup-node@v6
+            - name: Checkout content repo
+              uses: actions/checkout@v4
               with:
-                  node-version: lts/*
+                  repository: wangxvvv/Blog
+                  token: ${{ secrets.CONTENT_REPO_TOKEN }}
+                  ref: main
+                  path: content
+
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
 
             - name: Setup pnpm
               uses: pnpm/action-setup@v4
@@ -92,10 +95,13 @@ jobs:
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
-            - name: Build (sync content + build)
+            - name: Sync content mappings
               env:
                   ENABLE_CONTENT_SYNC: "true"
-                  CONTENT_REPO_URL: ${{ secrets.CONTENT_REPO_URL }}
+                  CONTENT_DIR: content
+              run: node scripts/sync-content.js
+
+            - name: Build (production)
               run: pnpm build
 
             - name: Publish to nginx (atomic)
