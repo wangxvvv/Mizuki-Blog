@@ -1,0 +1,22 @@
+name: Manual Build & Static Deploy
+
+on:
+    workflow_dispatch:
+        inputs:
+            note:
+                description: "发布说明（可选）"
+                required: false
+
+jobs:
+    deploy:
+        runs-on: self-hosted
+
+        steps:
+            - name: Build
+              run: /opt/blog/Mizuki-Blog/CI/build.sh
+
+            - name: Deploy local
+              run: /opt/blog/Mizuki-Blog/CI/deploy-local.sh
+
+            - name: Deploy static to VPS
+              run: /opt/blog/Mizuki-Blog/CI/deploy-static.sh
