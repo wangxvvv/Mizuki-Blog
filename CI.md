@@ -39,3 +39,30 @@ CI/
 └── env.example              # 环境变量示例
 ```
 
+## 三、github workflows
+
+```
+name: Manual Build & Static Deploy
+
+on:
+    workflow_dispatch:
+        inputs:
+            note:
+                description: "发布说明（可选）"
+                required: false
+
+jobs:
+    deploy:
+        runs-on: self-hosted
+
+        steps:
+            - name: Build
+              run: path/Mizuki-Blog/CI/build.sh
+
+            - name: Deploy local
+              run: path/Mizuki-Blog/CI/deploy-local.sh
+
+            - name: Deploy static to VPS
+              run: path/Mizuki-Blog/CI/deploy-static.sh
+```
+
