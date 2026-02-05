@@ -9,7 +9,8 @@ cd "$REPO_DIR"
 
 git fetch origin
 git checkout main
-git pull --ff-only origin main
+git reset --hard origin/main
+git clean -fd
 
 pnpm install 
 pnpm build
