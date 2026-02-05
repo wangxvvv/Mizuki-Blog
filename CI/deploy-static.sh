@@ -10,13 +10,9 @@ RELEASE_DIR="$VPS_STATIC_ROOT/releases/$TS"
 echo "===> [VPS Deploy] Create $RELEASE_DIR"
 ssh "$VPS_USER@$VPS_HOST" "mkdir -p '$RELEASE_DIR'"
 
-echo "===> [VPS Deploy] Sync assets"
-rsync -az --delete "$DIST_DIR/assets/" \
-  "$VPS_USER@$VPS_HOST:$RELEASE_DIR/assets/"
-
-echo "===> [VPS Deploy] Sync pagefind"
-rsync -az --delete "$DIST_DIR/pagefind/" \
-  "$VPS_USER@$VPS_HOST:$RELEASE_DIR/pagefind/"
+echo "===> [VPS Deploy] Sync dist"
+rsync -az --delete "$DIST_DIR/" \
+  "$VPS_USER@$VPS_HOST:$RELEASE_DIR/"
 
 echo "===> [VPS Deploy] Atomic switch"
 ssh "$VPS_USER@$VPS_HOST" \
