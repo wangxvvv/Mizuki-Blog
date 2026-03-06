@@ -286,11 +286,11 @@ export const navBarConfig: NavBarConfig = {
 					url: "/about/",
 					icon: "material-symbols:person",
 				},
-				{
-					name: "Projects",
-					url: "/projects/",
-					icon: "material-symbols:work",
-				},
+				// {
+				// 	name: "Projects",
+				// 	url: "/projects/",
+				// 	icon: "material-symbols:work",
+				// },
 				{
 					name: "Skills",
 					url: "/skills/",
