@@ -429,7 +429,7 @@ export const shareConfig: ShareConfig = {
 
 export const announcementConfig: AnnouncementConfig = {
 	title: "你好，很高兴认识你👋", // 公告标题
-	content: "这里是王诩", // 公告内容
+	content: "某些尺寸下会有显示bug，字体显示bug可以通过清除浏览器缓存修复", // 公告内容
 	closable: true, // 允许用户关闭公告
 	link: {
 		enable: true, // 启用链接
@@ -680,3 +680,4 @@ export const umamiConfig = {
 <script defer src="XXXX.XXX" data-website-id="ABCD1234"></script>
   `.trim(), // 上面填你要插入的Script,不用再去Layout中插入
 } as const;
+
